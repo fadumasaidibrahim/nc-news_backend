@@ -1,7 +1,7 @@
-const { getTopics } = require("../models/topics");
+const { selectTopics } = require('../models/topics');
 
 exports.getTopics = (req, res, next) => {
-  getTopics()
+  selectTopics()
     .then((topics) => {
       res.status(200).send({ topics });
     })
