@@ -73,6 +73,29 @@ describe('app', () => {
             });
           });
       });
+      describe('/API/USERS', () => {
+        describe('GET /api/users', () => {
+          test('status: 200 - responds with user object', () => {
+            return request(app)
+              .get('/api/users')
+              .expect(200)
+              .then((response) => {
+                expect(Object.keys(response.body)).toHaveLength(1);
+                expect(Object.keys(response.body)[0]).toEqual('users');
+                expect(response.body.users).toHaveLength(4);
+                response.body.users.forEach((users) => {
+                  expect(users).toEqual(
+                    expect.objectContaining({
+                      username: expect.any(String),
+                      name: expect.any(String),
+                      avatar_url: expect.any(String),
+                    })
+                  );
+                });
+              });
+          });
+        });
+      });
     });
   });
 });
