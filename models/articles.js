@@ -26,3 +26,24 @@ exports.getArticles = async () => {
   return queryStr.rows;
 
 };
+
+exports.updateArticleById = (article_id, inc_votes) => {
+  return db
+    .query(
+      `UPDATE articles 
+      SET votes = votes + $1
+      WHERE article_id = $2
+      RETURNING *;`,
+      [inc_votes, article_id]
+    )
+    .then((response) => {
+      if (response.rows.length === 0) {
+        return Promise.reject({
+          status: 400,
+          msg: 'bad request - invalid sytnax used for inc_votes on body',
+        });
+      } else {
+        return response.rows[0];
+      }
+    });
+};
