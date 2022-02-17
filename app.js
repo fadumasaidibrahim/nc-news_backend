@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const { getTopics } = require('./controllers/topics');
+
 const {
   getArticleById,
   updateArticleVotes,
@@ -11,7 +12,18 @@ const {
   handle500Errors,
 } = require('./errors');
 
+
+const { getArticleById } = require('./controllers/articles');
+
+
 app.use(express.json());
+
+const { getArticles } = require('./controllers/articles');
+
+app.use(express.json());
+app.get('/api/topics', getTopics);
+app.get('/api/articles', getArticles);
+
 
 app.get('/api/topics', getTopics);
 
@@ -27,7 +39,16 @@ app.use((err, req, res, next) => {
   res.status(500).send({ msg: 'Uh oh! Server Error!' });
 });
 
+
 app.use(handlePsqlErrors);
 app.use(handleCustomErrors);
 app.use(handle500Errors);
+
+
+app.all('/*', (req, res) => {
+  res.status(404).send({ msg: 'Path not found' });
+});
+
+
+
 module.exports = app;
