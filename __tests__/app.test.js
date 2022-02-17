@@ -36,6 +36,22 @@ describe('app', () => {
     });
   });
 
+  describe('GET - /api/articles/:article_id', () => {
+    test('status:200, responds with an article object', () => {
+      return request(app)
+        .get('/api/articles/5')
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article).toEqual({
+            article_id: 5,
+            title: 'UNCOVERED: catspiracy to bring down democracy',
+            topic: 'cats',
+            author: 'rogersop',
+            body: 'Bastet walks amongst us, and the cats are taking arms!',
+            created_at: '2020-08-03T13:14:00.000Z',
+            votes: 0,
+
+
   describe('GET - /api/articles', () => {
     test('status:200, responds with an array of articles objects', () => {
       return request(app)
@@ -55,6 +71,7 @@ describe('app', () => {
                 votes: expect.any(Number),
               })
             );
+
           });
         });
     });
