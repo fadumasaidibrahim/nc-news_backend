@@ -35,6 +35,7 @@ describe('app', () => {
         });
     });
   });
+
   describe('GET - /api/articles/:article_id', () => {
     test('status:200, responds with an article object', () => {
       return request(app)
@@ -49,6 +50,28 @@ describe('app', () => {
             body: 'Bastet walks amongst us, and the cats are taking arms!',
             created_at: '2020-08-03T13:14:00.000Z',
             votes: 0,
+
+
+  describe('GET - /api/articles', () => {
+    test('status:200, responds with an array of articles objects', () => {
+      return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(12);
+          expect(articles).toBeInstanceOf(Array);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                title: expect.any(String),
+                topic: expect.any(String),
+                author: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+
           });
         });
     });

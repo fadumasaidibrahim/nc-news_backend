@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+
 exports.selectArticleById = (article_id) => {
   return db
     .query(
@@ -16,6 +17,14 @@ exports.selectArticleById = (article_id) => {
         return response.rows[0];
       }
     });
+
+
+exports.getArticles = async () => {
+  const queryStr = await db.query(
+    `SELECT * FROM articles ORDER BY created_at desc;`
+  );
+  return queryStr.rows;
+
 };
 
 exports.updateArticleById = (article_id, inc_votes) => {
