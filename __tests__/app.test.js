@@ -117,6 +117,52 @@ describe('app', () => {
                 });
               });
           });
+          describe('GET - /api/articles', () => {
+            test('status:200, responds with an array of articles objects', () => {
+              return request(app)
+                .get('/api/articles')
+                .expect(200)
+                .then(({ body: { articles } }) => {
+                  expect(articles).toHaveLength(12);
+                  expect(articles).toBeInstanceOf(Array);
+                  articles.forEach((article) => {
+                    expect(article).toEqual(
+                      expect.objectContaining({
+                        article_id: expect.any(Number),
+                        title: expect.any(String),
+                        topic: expect.any(String),
+                        author: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                      })
+                    );
+                  });
+                });
+            });
+
+            describe('GET /api/articles/:article_id/comments', () => {
+              test('status:200, responds with an comment object', () => {
+                return request(app)
+                  .get('/api/articles/5/comments')
+                  .expect(200)
+                  .then(({ body: { article } }) => {
+                    console.log(article);
+                    expect(article).toEqual(
+                      expect.objectContaining({
+                        body: expect.any(String),
+                        title: expect.any(String),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        article_id: 5,
+                        topic: expect.any(String),
+                        comment_count: 2,
+                        created_at: expect.any(String),
+                      })
+                    );
+                  });
+              });
+            });
+          });
         });
       });
     });
